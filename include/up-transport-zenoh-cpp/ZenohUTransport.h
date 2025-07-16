@@ -19,7 +19,6 @@
 #include <optional>
 #include <unordered_map>
 
-#define ZENOHCXX_ZENOHC
 #include <zenoh.hxx>
 
 #include "ThreadSafeMap.h"
@@ -44,6 +43,7 @@ namespace uprotocol::transport {
 /// * [MUST] Throw an exception if the transport fails to initialize or the
 ///          configuration is invalid.
 struct ZenohUTransport : public UTransport {
+#ifdef ZENOHCXX_ZENOHC
 	/// @brief Constructor
 	///
 	/// @param defaultUri Default Authority and Entity (as a UUri) for
@@ -52,7 +52,14 @@ struct ZenohUTransport : public UTransport {
 	///                   transport configuration.
 	ZenohUTransport(const v1::UUri& defaultUri,
 	                const std::filesystem::path& configFile);
-
+#endif
+#ifdef ZENOHCXX_ZENOHPICO
+	/// @brief Constructor
+	///
+	/// @param defaultUri Default Authority and Entity (as a UUri) for
+	///                   clients using this transport instance.
+	explicit ZenohUTransport(const v1::UUri& defaultUri);
+#endif
 	virtual ~ZenohUTransport() = default;
 
 protected:

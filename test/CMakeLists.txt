@@ -26,16 +26,27 @@ function(add_coverage_test Name)
         up-core-api::up-core-api
         up-cpp::up-cpp
         up-cpp::up-transport-zenoh-cpp
-        zenohcpp::lib
+        zenohpico::lib
+        zenohcxx::zenohpico
         spdlog::spdlog
         protobuf::protobuf
         PRIVATE
         GTest::gtest_main
         GTest::gmock
-        pthread
     )
+    if(CMAKE_SYSTEM_NAME MATCHES "QNX")
+        target_link_libraries(${Name} PRIVATE socket)
+    else()
+        target_link_libraries(${Name} PRIVATE pthread)
+    endif()
+
     target_include_directories(${Name} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
-    gtest_discover_tests(${Name} XML_OUTPUT_DIR results)
+    if(CMAKE_CROSSCOMPILING)
+        ## Workaround for legacy "gtest" tests setup in case of cross-build
+        gtest_add_tests(TARGET ${Name} SOURCES ${ARGN})
+    else()
+        gtest_discover_tests(${Name} XML_OUTPUT_DIR results)
+    endif()
 endfunction()
 
 # NOTE: This is temporarily just a call to add_coverage_test. When coverage

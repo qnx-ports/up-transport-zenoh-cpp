@@ -16,7 +16,8 @@ find_package(protobuf REQUIRED)
 find_package(spdlog REQUIRED)
 find_package(up-core-api REQUIRED)
 find_package(up-cpp REQUIRED)
-find_package(zenohcpp REQUIRED)
+find_package(zenohpico REQUIRED)
+find_package(zenohcxx REQUIRED)
 
 # TODO NEEDED?
 #add_definitions(-DSPDLOG_FMT_EXTERNAL)
@@ -51,7 +52,8 @@ target_include_directories(${PROJECT_NAME}
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 	$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 	$<BUILD_INTERFACE:${CMAKE_BINARY_DIR}>
-	${zenohcpp_INCLUDE_DIR}
+	${zenohpico_INCLUDE_DIR}
+	${zenohcxx_zenohpico_INCLUDE_DIR}
 	${up-cpp_INCLUDE_DIR}
 	${up-core-api_INCLUDE_DIR}
 	${protobuf_INCLUDE_DIR}
@@ -61,7 +63,8 @@ set_property(TARGET ${PROJECT_NAME} PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 target_link_libraries(${PROJECT_NAME}
 	PRIVATE
-	zenohcpp::lib
+	zenohpico::lib
+	zenohcxx::zenohpico
 	up-cpp::up-cpp
 	up-core-api::up-core-api
 	protobuf::libprotobuf

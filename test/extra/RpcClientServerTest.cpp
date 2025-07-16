@@ -61,7 +61,12 @@ protected:
 	// Run once per TEST_F.
 	// Used to set up clean environments per test.
 	void SetUp() override {
+#ifdef ZENOHCXX_ZENOHC
 		transport_ = std::make_shared<Transport>(ident, ZENOH_CONFIG_FILE);
+#endif
+#ifdef ZENOHCXX_ZENOHPICO
+		transport_ = std::make_shared<Transport>(ident);
+#endif
 		EXPECT_NE(nullptr, transport_);
 	}
 

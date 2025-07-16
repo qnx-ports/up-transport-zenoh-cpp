@@ -64,12 +64,18 @@ v1::UUri create_uuri(std::string_view serialized) {
 
 // TODO(sashacmc): config generation
 TEST_F(TestZenohUTransport, ConstructDestroy) {
+#ifdef ZENOHCXX_ZENOHC
 	std::cout << ZENOH_CONFIG_FILE << std::endl;
 
 	zenoh::init_logger();
 
 	auto transport = std::make_shared<transport::ZenohUTransport>(
 	    create_uuri(ENTITY_URI_STR), ZENOH_CONFIG_FILE);
+#endif
+#ifdef ZENOHCXX_ZENOHPICO
+	auto transport = std::make_shared<transport::ZenohUTransport>(
+	    create_uuri(ENTITY_URI_STR));
+#endif
 }
 
 struct ExposeKeyString : public transport::ZenohUTransport {
