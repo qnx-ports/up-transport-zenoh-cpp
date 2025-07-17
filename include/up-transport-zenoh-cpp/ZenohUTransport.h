@@ -18,6 +18,7 @@
 #include <mutex>
 #include <optional>
 #include <unordered_map>
+#include <sstream>
 
 #include <zenoh.hxx>
 
