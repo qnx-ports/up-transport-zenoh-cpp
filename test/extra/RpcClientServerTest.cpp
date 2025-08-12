@@ -135,12 +135,12 @@ TEST_F(RpcClientServerTest, SimpleRoundTrip) {  // NOLINT
 	ASSERT_TRUE(server_or_status.has_value());
 	ASSERT_NE(server_or_status.value(), nullptr);
 
-	auto client = RpcClient(transport_, v1::UUri(rpc_service_uuri),
-	                        UPriority::UPRIORITY_CS4, 1000ms);
+	auto client = RpcClient(transport_, UPriority::UPRIORITY_CS4, 1000ms);
 
 	uprotocol::communication::RpcClient::InvokeHandle client_handle;  // NOLINT
 	EXPECT_NO_THROW(                                                  // NOLINT
 	    client_handle = client.invokeMethod(
+	        v1::UUri(rpc_service_uuri),
 	        std::move(client_request_payload),
 	        [&client_called, &client_capture](const auto& maybe_response) {
 		        client_called = true;
