@@ -16,6 +16,10 @@ find_package(protobuf REQUIRED)
 find_package(spdlog REQUIRED)
 find_package(up-core-api REQUIRED)
 find_package(up-cpp REQUIRED)
+if(CMAKE_SYSTEM_NAME MATCHES "QNX")
+	# workaround since _Bool is not defined for C++ in qnx.
+	add_compile_definitions("_Bool=bool")
+endif()
 find_package(zenohpico REQUIRED)
 find_package(zenohcxx REQUIRED)
 
