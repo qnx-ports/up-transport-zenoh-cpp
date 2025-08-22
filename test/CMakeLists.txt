@@ -26,14 +26,31 @@ function(add_coverage_test Name)
         up-core-api::up-core-api
         up-cpp::up-cpp
         up-cpp::up-transport-zenoh-cpp
-        zenohpico::lib
-        zenohcxx::zenohpico
         spdlog::spdlog
         protobuf::protobuf
         PRIVATE
         GTest::gtest_main
         GTest::gmock
     )
+    if(WITH_ZENOH_PICO)
+        target_link_libraries(${Name}
+            PUBLIC
+            zenohpico::lib
+            zenohcxx::zenohpico
+        )
+    elseif(WITH_ZENOH_C)
+        target_link_libraries(${Name}
+            PUBLIC
+            zenohc::lib
+            zenohcxx::zenohc
+        )
+    else()
+        target_link_libraries(${Name}
+            PUBLIC
+            zenohcpp::lib
+        )
+    endif()
+
     if(CMAKE_SYSTEM_NAME MATCHES "QNX")
         target_link_libraries(${Name} PRIVATE socket)
     else()
